@@ -1,7 +1,7 @@
 mod cli;
-mod rule;
 mod config;
 mod proxy;
+mod rule;
 
 use clap::Parser;
 use wirefilter::Type;

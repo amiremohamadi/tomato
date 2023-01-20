@@ -1,5 +1,5 @@
-use wirefilter::{Field, Filter, Scheme};
 use anyhow::bail;
+use wirefilter::{Field, Filter, Scheme};
 
 lazy_static::lazy_static! {
     pub static ref SCHEME: Scheme = Scheme !{
@@ -31,9 +31,6 @@ impl CompiledRule {
             });
         let filter = ast.compile();
 
-        Ok(Self {
-            filter,
-            fields,
-        })
+        Ok(Self { filter, fields })
     }
 }

@@ -90,5 +90,4 @@ proxies:
         assert_eq!(&config.bind, "127.0.0.1");
         assert_eq!(config.log_level, LogLevel::Info);
     }
-
 }

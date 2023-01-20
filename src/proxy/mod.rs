@@ -1,4 +1,4 @@
-mod types;
 mod http;
+mod types;
 
 pub use types::ProxyType;
