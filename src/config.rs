@@ -17,6 +17,12 @@ pub struct Config {
     pub proxies: Option<Vec<ProxyConfig>>,
 }
 
+impl Config {
+    pub fn new(config: &str) -> Result<Self, anyhow::Error> {
+        Ok(serde_yaml::from_str(config)?)
+    }
+}
+
 #[derive(Deserialize, PartialEq, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum LogLevel {

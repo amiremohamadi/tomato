@@ -6,7 +6,7 @@ log-level: 'debug'
 proxies:
   - name: 'proxy'
     type: 'http'
-    server: 'localhost'
+    host: 'localhost'
     port: 8080
     rules:
       - '"secret" in request.headers.keys'
