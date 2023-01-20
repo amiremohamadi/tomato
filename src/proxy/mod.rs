@@ -1,3 +1,4 @@
-mod parse;
+mod types;
+mod http;
 
-pub use parse::ProxyType;
+pub use types::ProxyType;

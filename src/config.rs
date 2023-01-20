@@ -6,10 +6,13 @@ use crate::proxy::ProxyType;
 pub struct Config {
     #[serde(default = "default_port")]
     pub port: u16,
+
     #[serde(default = "default_bind")]
     pub bind: String,
+
     #[serde(default, rename = "log-level")]
     pub log_level: LogLevel,
+
     #[serde(default)]
     pub proxies: Option<Vec<ProxyConfig>>,
 }
@@ -38,8 +41,14 @@ fn default_bind() -> String {
 #[derive(Deserialize)]
 pub struct ProxyConfig {
     pub name: String,
+
+    #[serde(flatten)]
     pub r#type: ProxyType,
+
     pub rules: Option<Vec<String>>,
+
+    #[serde(flatten)]
+    pub inner: serde_yaml::Value,
 }
 
 #[cfg(test)]
@@ -57,18 +66,20 @@ log-level: 'debug'
 proxies:
   - name: 'proxy'
     type: 'http'
-    server: 'localhost'
+    host: 'localhost'
     port: 8080
     rules:
       - 'ip.src == 127.0.0.1'
 
   - name: 'direct'
     type: 'direct'
+    inner: something
 "#;
         let config: Config = serde_yaml::from_str(config).unwrap();
         assert_eq!(config.port, 1999);
         assert_eq!(&config.bind, "*");
         assert_eq!(config.log_level, LogLevel::Debug);
+        // assert_eq!(config.proxies.unwrap()[0].inner, "");
     }
 
     #[test]
