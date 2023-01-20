@@ -1,4 +1,5 @@
 use anyhow::bail;
+use serde::Deserialize;
 use wirefilter::{Field, Filter, Scheme};
 
 lazy_static::lazy_static! {
@@ -7,6 +8,8 @@ lazy_static::lazy_static! {
     };
 }
 
+#[derive(Deserialize)]
+#[serde(try_from = "String")]
 pub struct CompiledRule {
     pub filter: Filter<'static>,
     pub fields: Vec<Field<'static>>,
@@ -32,5 +35,13 @@ impl CompiledRule {
         let filter = ast.compile();
 
         Ok(Self { filter, fields })
+    }
+}
+
+impl TryFrom<String> for CompiledRule {
+    type Error = anyhow::Error;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        Self::new(&value)
     }
 }

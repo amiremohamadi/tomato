@@ -1,6 +1,7 @@
 use serde::Deserialize;
 
 use crate::proxy::ProxyType;
+use crate::rule::CompiledRule;
 
 #[derive(Deserialize)]
 pub struct Config {
@@ -51,10 +52,7 @@ pub struct ProxyConfig {
     #[serde(flatten)]
     pub r#type: ProxyType,
 
-    pub rules: Option<Vec<String>>,
-
-    #[serde(flatten)]
-    pub inner: serde_yaml::Value,
+    pub rules: Option<Vec<CompiledRule>>,
 }
 
 #[cfg(test)]
