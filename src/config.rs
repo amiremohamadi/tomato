@@ -16,6 +16,9 @@ pub struct Config {
 
     #[serde(default)]
     pub proxies: Option<Vec<ProxyConfig>>,
+
+    #[serde(default)]
+    pub rules: Vec<RuleConfig>,
 }
 
 impl Config {
@@ -51,8 +54,12 @@ pub struct ProxyConfig {
 
     #[serde(flatten)]
     pub r#type: ProxyType,
+}
 
-    pub rules: Option<Vec<CompiledRule>>,
+#[derive(Deserialize)]
+pub struct RuleConfig {
+    pub rule: CompiledRule,
+    pub proxy: String,
 }
 
 #[cfg(test)]
@@ -72,18 +79,19 @@ proxies:
     type: 'http'
     host: 'localhost'
     port: 8080
-    rules:
-      - 'ip.src == 127.0.0.1'
 
   - name: 'direct'
     type: 'direct'
     inner: something
+
+rules:
+    - rule: 'ip.src == 1.2.3.4'
+      proxy: direct
 "#;
         let config: Config = serde_yaml::from_str(config).unwrap();
         assert_eq!(config.port, 1999);
         assert_eq!(&config.bind, "*");
         assert_eq!(config.log_level, LogLevel::Debug);
-        // assert_eq!(config.proxies.unwrap()[0].inner, "");
     }
 
     #[test]

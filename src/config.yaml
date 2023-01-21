@@ -8,11 +8,16 @@ proxies:
     type: 'http'
     host: 'localhost'
     port: 8080
-    rules:
-      - '"secret" in request.headers.keys'
-      - 'ip.geoip.country == "IR"'
 
   - name: 'direct'
     type: 'direct'
-    rules:
-      - 'ip.geoip.country == "IR"'
+
+rules:
+  - rule: '"secret" in request.headers.keys'
+    proxy: direct
+
+  - rule: 'ip.geoip.country == "IR"'
+    proxy: direct
+
+  - rule: 'match'
+    proxy: proxy
