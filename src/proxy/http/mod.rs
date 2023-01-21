@@ -1,3 +1,3 @@
-mod http;
+mod proxy;
 
-pub use http::HttpProxy;
+pub use proxy::HttpProxy;
